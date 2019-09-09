@@ -8,7 +8,11 @@ abstract class AppEvent extends Equatable {
   AppEvent([List props = const []]) : super(props);
 }
 
-class LoadNotes extends AppEvent {}
+class LoadNotes extends AppEvent {
+  final bool withSampleData;
+
+  LoadNotes({this.withSampleData = false}) : super([withSampleData]);
+}
 
 class AddNote extends AppEvent {
   final Note note;

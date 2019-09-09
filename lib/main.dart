@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AppBloc>(
       builder: (_) => AppBloc(),
-      child: MaterialApp(
+      child: CupertinoApp(
+        // showPerformanceOverlay: true,
+        debugShowCheckedModeBanner: false,
         home: HomePage(),
       ),
     );

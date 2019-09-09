@@ -15,6 +15,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   Stream<AppState> mapEventToState(AppEvent event) async* {
     if (event is LoadNotes) {
       yield AppLoading();
+      if (event.withSampleData && await _notesRepository.isEmpty()) {
+        await _notesRepository.addSampleNotes();
+      }
       yield* _reloadNotes();
     }
     if (event is AddNote) {

@@ -1,65 +1,103 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/app_bloc.dart';
-import '../bloc/app_events.dart';
-import '../bloc/app_states.dart';
+import '../theme.dart';
 import 'note.dart';
-import 'note_tile.dart';
+import 'notes_list.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  AppBloc _bloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _bloc = BlocProvider.of<AppBloc>(context);
-    _bloc.dispatch(LoadNotes());
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder(
-          bloc: _bloc,
-          builder: (BuildContext context, AppState state) {
-            if (state is AppLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is AppLoaded) {
-              return state.notes.length > 0
-                  ? ListView.builder(
-                      itemCount: state.notes.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return NoteTile(note: state.notes[index]);
-                      },
-                    )
-                  : Center(child: Text('No notes yet :('));
-            } else if (state is AppError) {
-              return Center(child: Text('${state.message}'));
-            }
-            return Container();
-          },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    Icons.short_text,
+                    color: Styles.textColor,
+                    size: 40.0,
+                  ),
+                  Icon(
+                    Icons.person,
+                    color: Styles.textColor,
+                    size: 30.0,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Notes',
+                    style: TextStyle(color: Styles.textColor, fontSize: 40.0),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CupertinoTextField(
+                      padding: const EdgeInsets.all(8.0),
+                      placeholder: 'Search',
+                      placeholderStyle:
+                          TextStyle(color: CupertinoColors.inactiveGray),
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.lightBackgroundGray,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      suffix: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.search,
+                          color: CupertinoColors.inactiveGray,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text('Notes'),
+                  Text('Bookmarks'),
+                  Icon(
+                    Icons.dashboard,
+                    color: Styles.textColor,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: NotesList(),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        backgroundColor: CupertinoColors.destructiveRed,
+        child: Icon(
+          Icons.add,
+          size: 40.0,
+        ),
         onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (BuildContext context) => NotePage()));
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (BuildContext context) => NotePage()));
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _bloc.dispose();
-    super.dispose();
   }
 }

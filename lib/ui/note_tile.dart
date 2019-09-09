@@ -1,38 +1,68 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-import '../bloc/app_bloc.dart';
-import '../bloc/app_events.dart';
 import '../models/note.dart';
+import '../theme.dart';
 import 'note.dart';
 
-class NoteTile extends StatefulWidget {
+class NoteTile extends StatelessWidget {
   final Note note;
 
   const NoteTile({Key key, @required this.note}) : super(key: key);
 
   @override
-  _NoteTileState createState() => _NoteTileState();
-}
-
-class _NoteTileState extends State<NoteTile> {
-  @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('${widget.note.title}'),
-      subtitle: Text(DateFormat('dd-MM-yy hh:mm')
-          .format(DateTime.fromMillisecondsSinceEpoch(widget.note.created))),
-      trailing: IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () => BlocProvider.of<AppBloc>(context)
-            .dispatch(DeleteNote(note: widget.note)),
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: CupertinoColors.lightBackgroundGray,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${note.title}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Styles.textColor),
+                  ),
+                  Text(
+                    DateFormat('HH:mm').format(
+                        DateTime.fromMillisecondsSinceEpoch(note.created)),
+                  ),
+                ],
+              ),
+              note.body != ''
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text(
+                        '${note.body}',
+                        style:
+                            TextStyle(color: Styles.textColor, fontSize: 16.0),
+                      ),
+                    )
+                  : SizedBox(height: 10.0),
+              Text(
+                DateFormat('yMMMMd')
+                    .format(DateTime.fromMillisecondsSinceEpoch(note.created)),
+                style: TextStyle(fontSize: 12.0, color: Styles.textColor),
+              ),
+            ],
+          ),
+        ),
       ),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => NotePage(
-                  note: widget.note,
-                )));
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => NotePage(note: note),
+          ),
+        );
       },
     );
   }
