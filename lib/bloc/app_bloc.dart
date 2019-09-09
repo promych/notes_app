@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:notes_app/bloc/app_events.dart';
-import 'package:notes_app/bloc/app_states.dart';
-import 'package:notes_app/models/note.dart';
-import 'package:notes_app/data/notes_repository.dart';
+
+import '../data/notes_repository.dart';
+import '../models/note.dart';
+import 'app_events.dart';
+import 'app_states.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   NotesRepository _notesRepository = NotesRepository();

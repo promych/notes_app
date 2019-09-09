@@ -4,16 +4,16 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^0.15.1
-  equatable: ^0.2.6
-  sembast: ^1.15.4+1
-  path_provider: ^1.1.0
-  intl: ^0.15.8
+  flutter_bloc: ^0.21.0
+  equatable: ^0.5.1
+  sembast: ^2.0.1+2
+  path_provider: ^1.3.0
+  intl: ^0.16.0
   
   cupertino_icons: ^0.1.2
 
@@ -23,34 +23,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  
-  
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  

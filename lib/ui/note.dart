@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notes_app/bloc/app_bloc.dart';
-import 'package:notes_app/bloc/app_events.dart';
-import 'package:notes_app/models/note.dart';
+
+import '../bloc/app_bloc.dart';
+import '../bloc/app_events.dart';
+import '../models/note.dart';
 
 class NotePage extends StatefulWidget {
   final Note note;

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:notes_app/models/note.dart';
+
+import '../models/note.dart';
 
 @immutable
 abstract class AppState extends Equatable {

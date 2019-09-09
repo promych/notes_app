@@ -1,6 +1,7 @@
-import 'package:notes_app/data/database.dart';
-import 'package:notes_app/models/note.dart';
 import 'package:sembast/sembast.dart';
+
+import '../models/note.dart';
+import 'database.dart';
 
 class NotesRepository {
   var _store = StoreRef<int, Map<String, dynamic>>.main();

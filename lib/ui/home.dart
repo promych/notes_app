@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notes_app/bloc/app_bloc.dart';
-import 'package:notes_app/bloc/app_events.dart';
-import 'package:notes_app/bloc/app_states.dart';
-import 'package:notes_app/ui/note.dart';
-import 'package:notes_app/ui/note_tile.dart';
+
+import '../bloc/app_bloc.dart';
+import '../bloc/app_events.dart';
+import '../bloc/app_states.dart';
+import 'note.dart';
+import 'note_tile.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,9 +29,9 @@ class _HomePageState extends State<HomePage> {
         child: BlocBuilder(
           bloc: _bloc,
           builder: (BuildContext context, AppState state) {
-            if (state is AppLoading)
+            if (state is AppLoading) {
               return Center(child: CircularProgressIndicator());
-            if (state is AppLoaded) {
+            } else if (state is AppLoaded) {
               return state.notes.length > 0
                   ? ListView.builder(
                       itemCount: state.notes.length,
@@ -39,9 +40,10 @@ class _HomePageState extends State<HomePage> {
                       },
                     )
                   : Center(child: Text('No notes yet :('));
-            }
-            if (state is AppError)
+            } else if (state is AppError) {
               return Center(child: Text('${state.message}'));
+            }
+            return Container();
           },
         ),
       ),
