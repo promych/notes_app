@@ -5,31 +5,35 @@ import '../theme.dart';
 import 'note.dart';
 import 'notes_list.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController()
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    Icons.short_text,
-                    color: Styles.textColor,
-                    size: 40.0,
-                  ),
-                  Icon(
-                    Icons.person,
-                    color: Styles.textColor,
-                    size: 30.0,
-                  ),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -47,6 +51,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CupertinoTextField(
+                      controller: _controller,
                       padding: const EdgeInsets.all(8.0),
                       placeholder: 'Search',
                       placeholderStyle:
@@ -67,22 +72,10 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text('Notes'),
-                  Text('Bookmarks'),
-                  Icon(
-                    Icons.dashboard,
-                    color: Styles.textColor,
-                  ),
-                ],
-              ),
-            ),
             Expanded(
-              child: NotesList(),
+              child: NotesList(
+                searchController: _controller,
+              ),
             ),
           ],
         ),

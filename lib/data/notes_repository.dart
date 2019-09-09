@@ -51,8 +51,23 @@ class NotesRepository {
   }
 
   static const _sampleNotes = [
-    {'title': 'Dinner with family', 'body': '', 'created': 1567352730000},
-    {'title': 'Fishing', 'body': '', 'created': 1567490400000},
-    {'title': 'Presentaion work', 'body': '', 'created': 1567694730000},
+    {
+      'title': 'Dinner with family',
+      'body': '',
+      'created': 1567352730000,
+      'color': 1,
+    },
+    {
+      'title': 'Fishing',
+      'body': '',
+      'created': 1567490400000,
+      'color': 2,
+    },
+    {
+      'title': 'Presentation work',
+      'body': '',
+      'created': 1567694730000,
+      'color': 3,
+    },
   ];
 }

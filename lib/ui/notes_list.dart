@@ -7,6 +7,10 @@ import '../bloc/app_states.dart';
 import 'note_tile.dart';
 
 class NotesList extends StatefulWidget {
+  final TextEditingController searchController;
+
+  NotesList({this.searchController});
+
   @override
   _NotesListState createState() => _NotesListState();
 }
@@ -29,17 +33,26 @@ class _NotesListState extends State<NotesList> {
         if (state is AppLoading) {
           return Center(child: CircularProgressIndicator());
         } else if (state is AppLoaded) {
-          return state.notes.length > 0
-              ? ListView.builder(
-                  itemCount: state.notes.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return NoteTile(
-                      key: ValueKey(state.notes[index].id),
-                      note: state.notes[index],
-                    );
-                  },
-                )
-              : Center(child: Text('No notes yet :('));
+          if (state.notes.length == 0)
+            return Center(child: Text('No notes yet :('));
+          final notes = widget.searchController.text == null
+              ? state.notes
+              : state.notes
+                  .where((note) => note.title.toLowerCase().contains(
+                      widget.searchController.text.toString().toLowerCase()))
+                  .toList();
+          return ListView.builder(
+            itemCount: notes.length,
+            itemBuilder: (BuildContext context, int index) {
+              return NoteTile(
+                key: ValueKey(notes[index].id),
+                note: notes[index],
+                onDismiss: () {
+                  _bloc.dispatch(DeleteNote(note: notes[index]));
+                },
+              );
+            },
+          );
         } else if (state is AppError) {
           return Center(child: Text('${state.message}'));
         }

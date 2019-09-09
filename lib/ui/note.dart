@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +19,7 @@ class NotePage extends StatefulWidget {
 class _NotePageState extends State<NotePage> {
   AppBloc _bloc;
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  MaterialColor _selectedColor;
 
   String _title;
   String _body;
@@ -26,6 +28,8 @@ class _NotePageState extends State<NotePage> {
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<AppBloc>(context);
+    _selectedColor =
+        widget.note?.color != null ? widget.note.color : Colors.grey;
   }
 
   @override
@@ -52,6 +56,30 @@ class _NotePageState extends State<NotePage> {
                   maxLines: 10,
                   onSaved: (value) => _body = value,
                 ),
+                SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    for (var color in noteColors)
+                      CircleAvatar(
+                        backgroundColor: color == _selectedColor
+                            ? CupertinoColors.lightBackgroundGray
+                            : Colors.transparent,
+                        radius: 20.0,
+                        child: GestureDetector(
+                          child: CircleAvatar(
+                            radius: 14.0,
+                            backgroundColor: color,
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _selectedColor = color;
+                            });
+                          },
+                        ),
+                      )
+                  ],
+                ),
               ],
             ),
           ),
@@ -60,31 +88,39 @@ class _NotePageState extends State<NotePage> {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // FloatingActionButton(
+          //   heroTag: 'delete-fab',
+          //   child: Icon(Icons.delete),
+          //   onPressed: () {
+          //     _bloc.dispatch(DeleteNote(note: widget.note));
+          //     _bloc.dispatch(LoadNotes());
+          //     Navigator.pop(context);
+          //   },
+          // ),
           FloatingActionButton(
-            heroTag: 'delete-fab',
-            child: Icon(Icons.delete),
-            onPressed: () {
-              _bloc.dispatch(DeleteNote(note: widget.note));
-              _bloc.dispatch(LoadNotes());
-              Navigator.pop(context);
-            },
-          ),
-          FloatingActionButton(
-            heroTag: 'save-fab',
+            heroTag: 'action-fab',
+            backgroundColor: CupertinoColors.destructiveRed,
             child: Icon(Icons.save),
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 (widget.note == null)
-                    ? _bloc.dispatch(AddNote(
-                        note: Note(
+                    ? _bloc.dispatch(
+                        AddNote(
+                          note: Note(
                             title: _title,
                             body: _body,
-                            created: DateTime.now().millisecondsSinceEpoch),
-                      ))
+                            created: DateTime.now().millisecondsSinceEpoch,
+                            color: _selectedColor ?? Colors.grey,
+                          ),
+                        ),
+                      )
                     : _bloc.dispatch(UpdateNote(
-                        note:
-                            widget.note.copyWith(title: _title, body: _body)));
+                        note: widget.note.copyWith(
+                        title: _title,
+                        body: _body,
+                        color: _selectedColor,
+                      )));
                 Navigator.of(context).pop();
               }
             },
