@@ -36,7 +36,6 @@ class Note {
   }
 
   static Note fromMap(Map<String, dynamic> map) {
-    print(map);
     return Note(
       title: map['title'],
       body: map['body'],

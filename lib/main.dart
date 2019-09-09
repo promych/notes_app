@@ -13,7 +13,6 @@ class App extends StatelessWidget {
     return BlocProvider<AppBloc>(
       builder: (_) => AppBloc(),
       child: CupertinoApp(
-        // showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
         home: HomePage(),
       ),

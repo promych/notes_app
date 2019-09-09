@@ -85,47 +85,33 @@ class _NotePageState extends State<NotePage> {
           ),
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // FloatingActionButton(
-          //   heroTag: 'delete-fab',
-          //   child: Icon(Icons.delete),
-          //   onPressed: () {
-          //     _bloc.dispatch(DeleteNote(note: widget.note));
-          //     _bloc.dispatch(LoadNotes());
-          //     Navigator.pop(context);
-          //   },
-          // ),
-          FloatingActionButton(
-            heroTag: 'action-fab',
-            backgroundColor: CupertinoColors.destructiveRed,
-            child: Icon(Icons.save),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                (widget.note == null)
-                    ? _bloc.dispatch(
-                        AddNote(
-                          note: Note(
-                            title: _title,
-                            body: _body,
-                            created: DateTime.now().millisecondsSinceEpoch,
-                            color: _selectedColor ?? Colors.grey,
-                          ),
-                        ),
-                      )
-                    : _bloc.dispatch(UpdateNote(
-                        note: widget.note.copyWith(
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'action-fab',
+        backgroundColor: CupertinoColors.destructiveRed,
+        child: Icon(Icons.save),
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            _formKey.currentState.save();
+            (widget.note == null)
+                ? _bloc.dispatch(
+                    AddNote(
+                      note: Note(
                         title: _title,
                         body: _body,
-                        color: _selectedColor,
-                      )));
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-        ],
+                        created: DateTime.now().millisecondsSinceEpoch,
+                        color: _selectedColor ?? Colors.grey,
+                      ),
+                    ),
+                  )
+                : _bloc.dispatch(UpdateNote(
+                    note: widget.note.copyWith(
+                    title: _title,
+                    body: _body,
+                    color: _selectedColor,
+                  )));
+            Navigator.of(context).pop();
+          }
+        },
       ),
     );
   }
